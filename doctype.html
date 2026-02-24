@@ -1,0 +1,546 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>可負擔住宅購屋流程</title>
+  <style>
+    :root{
+      --brand:#8b1c1c;       /* 主色：你可改成桃園市風格 */
+      --brand-2:#b12a2a;
+      --text:#1f2328;
+      --muted:#6b7280;
+      --line:#e5e7eb;
+      --bg:#ffffff;
+      --card:#ffffff;
+      --chip:#f3f4f6;
+      --shadow: 0 8px 20px rgba(0,0,0,.06);
+      --radius: 16px;
+    }
+
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      color:var(--text);
+      background: #fafafa;
+    }
+
+    .wrap{
+      max-width: 1080px;
+      margin: 40px auto;
+      padding: 0 18px 60px;
+    }
+
+    h1{
+      font-size: 28px;
+      margin: 0 0 18px;
+      letter-spacing:.02em;
+    }
+
+    .lead{
+      color:var(--muted);
+      margin: 0 0 28px;
+      line-height: 1.7;
+    }
+
+    /* timeline list */
+    .timeline{
+      list-style:none;
+      padding:0;
+      margin:0;
+      display:flex;
+      flex-direction:column;
+      gap: 18px;
+    }
+
+    .step{
+      display:grid;
+      grid-template-columns: 140px 1fr;
+      gap: 18px;
+      align-items:start;
+    }
+
+    /* left rail */
+    .rail{
+      position:relative;
+      padding-top: 2px;
+      min-height: 100%;
+    }
+    .rail::before{
+      content:"";
+      position:absolute;
+      left: 34px;
+      top: 54px;
+      bottom: -18px;
+      width: 2px;
+      background: var(--line);
+    }
+    .step:last-child .rail::before{
+      bottom: 28px;
+    }
+
+    .badge{
+      width: 68px;
+      height: 68px;
+      border-radius: 999px;
+      background: var(--brand);
+      color: #fff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight: 800;
+      font-size: 22px;
+      letter-spacing:.02em;
+      box-shadow: 0 8px 18px rgba(139,28,28,.22);
+    }
+
+    .pin{
+      position:absolute;
+      left: 34px;
+      top: 68px;
+      transform: translate(-50%, 0);
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: var(--brand-2);
+      border: 3px solid #fff;
+      box-shadow: 0 4px 12px rgba(0,0,0,.10);
+    }
+
+    .icon{
+      margin-top: 10px;
+      margin-left: 80px;
+      width: 40px;
+      height: 40px;
+      color: var(--brand);
+      opacity: .95;
+    }
+
+    /* right content card */
+    .card{
+      background: var(--card);
+      border: 1px solid #f0f0f0;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 20px 22px;
+    }
+
+    .card header{
+      display:flex;
+      gap: 12px;
+      align-items:baseline;
+      flex-wrap:wrap;
+      margin-bottom: 8px;
+    }
+
+    .title{
+      font-size: 22px;
+      font-weight: 800;
+      margin: 0;
+    }
+
+    .subtitle{
+      color: var(--muted);
+      font-size: 14px;
+      margin: 0;
+    }
+
+    .sections{
+      margin-top: 14px;
+      display:flex;
+      flex-direction:column;
+      gap: 14px;
+    }
+
+    .sec{
+      border-left: 4px solid #f3f4f6;
+      padding-left: 12px;
+    }
+
+    .sec-head{
+      display:flex;
+      gap: 10px;
+      align-items:center;
+      margin-bottom: 6px;
+    }
+
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: var(--chip);
+      color: #111827;
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing:.02em;
+      border: 1px solid #e5e7eb;
+    }
+
+    .sec h3{
+      margin:0;
+      font-size: 15px;
+      font-weight: 800;
+      color:#111827;
+    }
+
+    .bullets{
+      margin: 6px 0 0 0;
+      padding-left: 18px;
+      color: #374151;
+      line-height: 1.8;
+    }
+
+    .note{
+      margin-top: 10px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      background: #fff7f7;
+      border: 1px solid rgba(139,28,28,.18);
+      color: #7f1d1d;
+      line-height: 1.7;
+      font-size: 14px;
+    }
+
+    details{
+      margin-top: 10px;
+      border-radius: 12px;
+      border: 1px dashed #e5e7eb;
+      padding: 10px 12px;
+      background: #fcfcfc;
+    }
+
+    summary{
+      cursor:pointer;
+      font-weight: 800;
+      color:#111827;
+      list-style:none;
+    }
+    summary::-webkit-details-marker{ display:none; }
+
+    .mini{
+      margin: 8px 0 0;
+      color: #4b5563;
+      line-height: 1.8;
+      padding-left: 18px;
+    }
+
+    /* responsive */
+    @media (max-width: 860px){
+      .step{
+        grid-template-columns: 1fr;
+      }
+      .rail{
+        display:flex;
+        align-items:center;
+        gap: 12px;
+        padding: 0;
+      }
+      .rail::before{ display:none; }
+      .pin{ display:none; }
+      .icon{
+        margin:0;
+      }
+      .badge{
+        width: 56px;
+        height: 56px;
+        font-size: 18px;
+      }
+      .card{
+        padding: 18px 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>可負擔住宅購屋流程</h1>
+    <p class="lead">
+      以「民眾在意的細節」呈現每個步驟：要準備什麼、會發生什麼、什麼情況會被退件或影響進度。
+    </p>
+
+    <ol class="timeline">
+
+      <!-- STEP 01 -->
+      <li class="step">
+        <div class="rail" aria-hidden="true">
+          <div class="badge">01</div>
+          <div class="pin"></div>
+          <!-- simple inline svg icon -->
+          <svg class="icon" viewBox="0 0 24 24" fill="none">
+            <path d="M7 7h10M7 11h10M7 15h7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M6 3h12a2 2 0 0 1 2 2v14l-3-2-3 2-3-2-3 2-3-2V5a2 2 0 0 1 2-2Z"
+              stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+          </svg>
+        </div>
+
+        <section class="card">
+          <header>
+            <h2 class="title">查看公告與申請資格</h2>
+            <p class="subtitle">先確認「能不能申請」與「負擔得起」</p>
+          </header>
+
+          <div class="sections">
+            <div class="sec">
+              <div class="sec-head">
+                <span class="chip">你會在意</span>
+                <h3>我符合資格嗎？房型/價格適合嗎？</h3>
+              </div>
+              <ul class="bullets">
+                <li>查看建案位置、房型、坪數、價格與申請期間。</li>
+                <li>核對申請資格（設籍、所得、名下不動產等）。</li>
+                <li>先試算貸款與每月還款金額，避免後面卡關。</li>
+              </ul>
+            </div>
+
+            <div class="note">
+              小提醒：可負擔住宅常見會有「轉售/出租限制」，建議在申請前就先理解相關規範。
+            </div>
+          </div>
+        </section>
+      </li>
+
+      <!-- STEP 02 -->
+      <li class="step">
+        <div class="rail" aria-hidden="true">
+          <div class="badge">02</div>
+          <div class="pin"></div>
+          <svg class="icon" viewBox="0 0 24 24" fill="none">
+            <path d="M12 2v6m0 14v-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M7 7l-4 5 4 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M17 7l4 5-4 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+
+        <section class="card">
+          <header>
+            <h2 class="title">線上申請與文件上傳</h2>
+            <p class="subtitle">把資料一次準備好，後面比較不會補件</p>
+          </header>
+
+          <div class="sections">
+            <div class="sec">
+              <div class="sec-head">
+                <span class="chip">要準備</span>
+                <h3>身分/戶籍/所得財產相關文件</h3>
+              </div>
+              <ul class="bullets">
+                <li>線上填寫申請表（基本資料、家庭成員等）。</li>
+                <li>上傳必要證明文件（依公告規定）。</li>
+                <li>送出後請保留申請編號/收件證明。</li>
+              </ul>
+            </div>
+
+            <details>
+              <summary>常見補件原因（點開查看）</summary>
+              <ul class="mini">
+                <li>證明文件過期、影本不清楚或缺頁。</li>
+                <li>家庭成員資料不一致（戶籍/所得/財產）。</li>
+                <li>上傳格式不符（檔案大小、類型限制）。</li>
+              </ul>
+            </details>
+          </div>
+        </section>
+      </li>
+
+      <!-- STEP 03 -->
+      <li class="step">
+        <div class="rail" aria-hidden="true">
+          <div class="badge">03</div>
+          <div class="pin"></div>
+          <svg class="icon" viewBox="0 0 24 24" fill="none">
+            <path d="M4 5h16v14H4z" stroke="currentColor" stroke-width="2"/>
+            <path d="M7 9h10M7 13h7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M17 16l2 2 3-3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+
+        <section class="card">
+          <header>
+            <h2 class="title">資格審查與抽籤</h2>
+            <p class="subtitle">符合資格後，依規定公開方式決定順序</p>
+          </header>
+
+          <div class="sections">
+            <div class="sec">
+              <div class="sec-head">
+                <span class="chip">審查</span>
+                <h3>資料不足會通知補件，不符則退件</h3>
+              </div>
+              <ul class="bullets">
+                <li>主管機關進行資格審查。</li>
+                <li>資料不足者通知補件並回到審查。</li>
+                <li>資格不符合者，通知原因並結案。</li>
+              </ul>
+            </div>
+
+            <div class="sec">
+              <div class="sec-head">
+                <span class="chip">抽籤</span>
+                <h3>通過審查者參與公開抽籤</h3>
+              </div>
+              <ul class="bullets">
+                <li>抽籤決定購屋順序/名額。</li>
+                <li>通過審查 ≠ 一定購得住宅（仍以抽籤結果為準）。</li>
+              </ul>
+            </div>
+
+            <div class="note">
+              若公告有「優先順（先到先得）」等機制，可在此步驟以條件方式說明，避免民眾誤解。
+            </div>
+          </div>
+        </section>
+      </li>
+
+      <!-- STEP 04 (對齊你貼的「購買申請」那種分段小標) -->
+      <li class="step">
+        <div class="rail" aria-hidden="true">
+          <div class="badge">04</div>
+          <div class="pin"></div>
+          <svg class="icon" viewBox="0 0 24 24" fill="none">
+            <path d="M7 2h10v4H7z" stroke="currentColor" stroke-width="2"/>
+            <path d="M6 6h12v16H6z" stroke="currentColor" stroke-width="2"/>
+            <path d="M9 10h6M9 14h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+
+        <section class="card">
+          <header>
+            <h2 class="title">購屋申請（細節版）</h2>
+            <p class="subtitle">用「小標題」把民眾在意的細節拆出來</p>
+          </header>
+
+          <div class="sections">
+            <div class="sec">
+              <div class="sec-head">
+                <span class="chip">要望</span>
+                <h3>先選定住宅與資金計畫</h3>
+              </div>
+              <ol class="bullets">
+                <li>選定希望購買的住宅/房型，並做資金規劃。</li>
+                <li>確認銷售/選屋時間表（避免錯過）。</li>
+                <li>提出要望（偏好/意願）以利後續安排。</li>
+              </ol>
+            </div>
+
+            <div class="sec">
+              <div class="sec-head">
+                <span class="chip">登記申請</span>
+                <h3>完成登記並備齊身分文件</h3>
+              </div>
+              <ol class="bullets">
+                <li>登記申請希望購買的住宅。</li>
+                <li>提供身分文件影本（如身分證正反面等，依公告）。</li>
+                <li>依登記人數進行公開抽籤（如適用）。</li>
+              </ol>
+            </div>
+
+            <div class="sec">
+              <div class="sec-head">
+                <span class="chip">申請購買</span>
+                <h3>正式申請並完成本人確認</h3>
+              </div>
+              <ol class="bullets">
+                <li>填寫並提交購買申請書。</li>
+                <li>簽約前須完成本人確認（避免冒名/代辦爭議）。</li>
+              </ol>
+            </div>
+
+            <div class="note">
+              若適用「優先順（先到先得）」：可在此加一句「符合者可不經抽籤，直接進入申請購買」。
+            </div>
+          </div>
+        </section>
+      </li>
+
+      <!-- STEP 05 -->
+      <li class="step">
+        <div class="rail" aria-hidden="true">
+          <div class="badge">05</div>
+          <div class="pin"></div>
+          <svg class="icon" viewBox="0 0 24 24" fill="none">
+            <path d="M12 1l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"
+              stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+          </svg>
+        </div>
+
+        <section class="card">
+          <header>
+            <h2 class="title">支付頭款與簽約</h2>
+            <p class="subtitle">民眾最在意「錢怎麼付、誰能代付」</p>
+          </header>
+
+          <div class="sections">
+            <div class="sec">
+              <div class="sec-head">
+                <span class="chip">簽約前需支付</span>
+                <h3>頭款與相關稅費</h3>
+              </div>
+              <ol class="bullets">
+                <li>房屋售價約 10% 作為頭款（依實際規定）。</li>
+                <li>契約印花稅、匯款手續費等必要費用。</li>
+              </ol>
+            </div>
+
+            <div class="note">
+              建議明確寫：僅接受購買人名義匯款/不接受代匯（依實際規範調整），避免現場爭議。
+            </div>
+
+            <details>
+              <summary>簽約當天會做什麼（點開查看）</summary>
+              <ul class="mini">
+                <li>重點事項說明（權利義務、限制條款、時程）。</li>
+                <li>確認付款節點與貸款辦理時間。</li>
+                <li>完成契約簽署與文件填寫。</li>
+              </ul>
+            </details>
+          </div>
+        </section>
+      </li>
+
+      <!-- STEP 06 -->
+      <li class="step">
+        <div class="rail" aria-hidden="true">
+          <div class="badge">06</div>
+          <div class="pin"></div>
+          <svg class="icon" viewBox="0 0 24 24" fill="none">
+            <path d="M3 11l9-8 9 8v10H3z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M9 21v-8h6v8" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+          </svg>
+        </div>
+
+        <section class="card">
+          <header>
+            <h2 class="title">貸款、過戶與交屋</h2>
+            <p class="subtitle">完成程序後，正式成為屋主</p>
+          </header>
+
+          <div class="sections">
+            <div class="sec">
+              <div class="sec-head">
+                <span class="chip">辦理</span>
+                <h3>銀行貸款與不動產過戶</h3>
+              </div>
+              <ul class="bullets">
+                <li>依時程辦理貸款、對保與過戶登記。</li>
+                <li>完成後取得所有權（依政策規定受後續管理）。</li>
+              </ul>
+            </div>
+
+            <details>
+              <summary>常見問題（點開查看）</summary>
+              <ul class="mini">
+                <li>沒在期限內完成會怎樣？（可放違約/還補機制的「白話版」）</li>
+                <li>交屋前需要驗屋嗎？（依建案規範補）</li>
+              </ul>
+            </details>
+          </div>
+        </section>
+      </li>
+
+    </ol>
+  </div>
+</body>
+</html>
